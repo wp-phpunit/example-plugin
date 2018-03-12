@@ -20,8 +20,6 @@ matrix:
     - php: 7.0
       env: WP_VERSION=composer # use wp-phpunit
     - php: 5.6
-      env: WP_VERSION=3.7.11
-    - php: 5.6
       env: WP_VERSION=trunk
 
 before_script:
