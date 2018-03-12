@@ -27,11 +27,11 @@ matrix:
 before_script:
   - composer validate --strict
   - mysql -u root -e "GRANT ALL PRIVILEGES ON wp_tests.* TO wp IDENTIFIED BY 'password';"
-  - \[ 'composer' != $WP_VERSION ] && curl -sSL -o tests/install-wp-tests.sh https://github.com/wp-cli/scaffold-command/raw/04be3128e743a0d94a1db5b7da942b538e96e6a8/templates/install-wp-tests.sh
-  - \[ 'composer' != $WP_VERSION ] && bash tests/bin/install-wp-tests.sh $WP_DB_NAME $WP_DB_USER $WP_DB_PASS
+  - if [ 'composer' != $WP_VERSION ]; then curl -sSL -o tests/install-wp-tests.sh https://github.com/wp-cli/scaffold-command/raw/04be3128e743a0d94a1db5b7da942b538e96e6a8/templates/install-wp-tests.sh; fi
+  - if [ 'composer' != $WP_VERSION ]; then bash tests/bin/install-wp-tests.sh $WP_DB_NAME $WP_DB_USER $WP_DB_PASS; fi
 
-install: \[ 'composer' == $WP_VERSION ] && composer install # install dev-dependencies
+install: if [ 'composer' == $WP_VERSION ]; then composer install; fi # install dev-dependencies
 
 script:
-  - \[ 'composer' != $WP_VERSION ] && phpunit
-  - \[ 'composer' == $WP_VERSION ] && composer test
+  - if [ 'composer' != $WP_VERSION ]; then phpunit; fi
+  - if [ 'composer' == $WP_VERSION ]; then composer test; fi
