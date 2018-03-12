@@ -36,7 +36,7 @@ class Example_Test extends WP_UnitTestCase {
 	}
 
 	protected function assertUsingWpPhpunit( $alt = '' ) {
-		$this->{"assertString{$alt}StartsWith"}(
+		$this->{"assertStringStarts{$alt}With"}(
 			dirname( __DIR__ ) . '/vendor/',
 			( new ReflectionClass( 'WP_UnitTestCase' ) )->getFileName()
 		);
