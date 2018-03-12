@@ -29,7 +29,7 @@ before_script:
   - mysql -u root -e "GRANT ALL PRIVILEGES ON wp_tests.* TO wp IDENTIFIED BY 'password';"
   - mysql -u root -e "CREATE DATABASE $WP_DB_NAME;"
   - if [ 'composer' != $WP_VERSION ]; then curl -sSL -o tests/install-wp-tests.sh https://github.com/wp-cli/scaffold-command/raw/04be3128e743a0d94a1db5b7da942b538e96e6a8/templates/install-wp-tests.sh; fi
-  - if [ 'composer' != $WP_VERSION ]; then bash tests/bin/install-wp-tests.sh $WP_DB_NAME $WP_DB_USER $WP_DB_PASS localhost $WP_VERSION true; fi
+  - if [ 'composer' != $WP_VERSION ]; then bash tests/install-wp-tests.sh $WP_DB_NAME $WP_DB_USER $WP_DB_PASS localhost $WP_VERSION true; fi
 
 install: if [ 'composer' == $WP_VERSION ]; then composer install; fi # install dev-dependencies
 
