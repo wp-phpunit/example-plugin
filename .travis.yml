@@ -5,9 +5,7 @@ env:
     - WP_DB_USER=wp
     - WP_DB_PASS=password
     - WP_DB_NAME=wp_tests
-    - WP_TESTS_DIR=/tmp/wordpress-tests-lib
-    - WP_CORE_DIR=/tmp/wordpress/
-    - WP_VERSION=latest
+    - WP_VERSION=*
 
 php:
   - 7.2
@@ -17,23 +15,20 @@ php:
 
 matrix:
   include:
-    - php: 7.0
-      env: WP_VERSION=composer # use wp-phpunit
+    - php: 7.2
+      env: WP_VERSION=4.4.0
     - php: 5.6
-      env: WP_VERSION=trunk
+      env: WP_VERSION=4.4.0
 
 before_script:
-  - composer validate --strict
-  - mysql -u root -e "GRANT ALL PRIVILEGES ON wp_tests.* TO wp IDENTIFIED BY 'password';"
-  - mysql -u root -e "CREATE DATABASE $WP_DB_NAME;"
-  - if [ 'composer' != $WP_VERSION ]; then curl -sSL -o tests/install-wp-tests.sh https://github.com/wp-cli/scaffold-command/raw/04be3128e743a0d94a1db5b7da942b538e96e6a8/templates/install-wp-tests.sh; fi
-  - if [ 'composer' != $WP_VERSION ]; then bash tests/install-wp-tests.sh $WP_DB_NAME $WP_DB_USER $WP_DB_PASS localhost $WP_VERSION true; fi
+  - mysql -u root -e "GRANT ALL PRIVILEGES ON ${WP_DB_NAME}.* TO ${WP_DB_USER} IDENTIFIED BY '${WP_DB_PASS}';"
+  - mysql -u root -e "CREATE DATABASE ${WP_DB_NAME};"
 
 install:
-  - if [ 'composer' == $WP_VERSION ]; then composer install; fi # install dev-dependencies
-  # Test Library does not currently support PHPUnit 7 - the version used on Travis for PHP 7.2
-  - if [ '7.2' == ${TRAVIS_PHP_VERSION:0:3} ]; then curl -sSfL -o "$HOME/.phpenv/versions/$TRAVIS_PHP_VERSION/bin/phpunit" https://phar.phpunit.de/phpunit-6.phar; fi
+  - composer validate --strict
+  - composer install
+  - composer require --dev --update-with-dependencies johnpbloch/wordpress:${WP_VERSION} wp-phpunit/wp-phpunit:${WP_VERSION}
+  - composer show
 
 script:
-  - if [ 'composer' != $WP_VERSION ]; then phpunit; fi
-  - if [ 'composer' == $WP_VERSION ]; then composer test; fi
+  - composer test
