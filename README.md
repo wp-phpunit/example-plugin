@@ -1,6 +1,6 @@
 # Example Plugin
 
-[![Build Status](https://travis-ci.org/wp-phpunit/example-plugin.svg?branch=master)](https://travis-ci.org/wp-phpunit/example-plugin)
+[![Build Status](https://app.travis-ci.com/wp-phpunit/example-plugin.svg?branch=master)](https://app.travis-ci.com/wp-phpunit/example-plugin)
 
 A complete example for using WP PHPUnit in the context of plugin development.
 
