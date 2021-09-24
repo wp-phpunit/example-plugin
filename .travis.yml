@@ -11,15 +11,14 @@ env:
     - WP_VERSION=*
 
 php:
+  - 8.0
   - 7.4
-  - 7.3
-  - 7.2
   - 5.6
 
 matrix:
   include:
     - php: 5.6
-      env: WP_VERSION=4.4.0
+      env: WP_VERSION=4.9.*
 
 before_script:
   - mysql -u root -e "GRANT ALL PRIVILEGES ON ${WP_DB_NAME}.* TO ${WP_DB_USER} IDENTIFIED BY '${WP_DB_PASS}';"
