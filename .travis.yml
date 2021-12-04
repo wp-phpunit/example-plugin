@@ -31,8 +31,8 @@ before_script:
 install:
   - composer validate --strict
   - composer require --no-update --dev roots/wordpress:${WP_VERSION} wp-phpunit/wp-phpunit:${WP_VERSION}
-  - composer install
-  - "[ $TRAVIS_PHP_VERSION != '8.0' ] || composer update phpunit/phpunit --ignore-platform-reqs --with-dependencies"
+  - "[ $TRAVIS_PHP_VERSION == '8.0' ] || composer install"
+  - "[ $TRAVIS_PHP_VERSION != '8.0' ] || composer install --ignore-platform-reqs"
   - composer show
 
 script:
