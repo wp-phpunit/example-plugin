@@ -9,8 +9,8 @@ A complete example for using WP PHPUnit in the context of plugin development.
 **Travis CI Configuration**
 
 A ready to use `.travis.yml` configured with a reasonable test matrix
-- Includes all currently supported versions of PHP (7.2, 7.3, 7.4) and the current WP minimum required PHP 5.6
-- Tests against the latest version of WordPress, as well as an older version (4.4.0) although it could be easily extended to include multiple older versions, multisite, etc.
+- Includes all currently supported versions of PHP (7.4 and 8.0) and the current WP minimum required PHP 5.6
+- Tests against the latest version of WordPress, as well as an older version (4.9) although it could be easily extended to include multiple older versions, multisite, etc.
 
 **Just Add Tests**
 
