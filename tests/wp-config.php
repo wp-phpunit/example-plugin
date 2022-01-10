@@ -34,7 +34,7 @@ define( 'WP_DEBUG', true );
 define( 'DB_NAME'       , getenv( 'WP_DB_NAME' ) ?: 'wp_phpunit_tests' );
 define( 'DB_USER'       , getenv( 'WP_DB_USER' ) ?: 'root' );
 define( 'DB_PASSWORD'   , getenv( 'WP_DB_PASS' ) ?: '' );
-define( 'DB_HOST'       , 'localhost' );
+define( 'DB_HOST'       , getenv( 'WP_DB_HOST' ) ?: 'localhost' );
 define( 'DB_CHARSET'    , 'utf8' );
 define( 'DB_COLLATE'    , '' );
 
