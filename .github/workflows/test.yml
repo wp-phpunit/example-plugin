@@ -1,0 +1,55 @@
+name: "Run Tests"
+
+on: [ push ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    env:
+      WP_DB_HOST: 127.0.0.1
+      WP_DB_NAME: wp_phpunit_tests
+      WP_DB_USER: root
+      WP_DB_PASS: ""
+
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_DATABASE: wp_phpunit_tests
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php: [ 8.0, 7.4, 5.6 ]
+        wordpress: [ 5.8.* ]
+
+    name: php${{ matrix.php }} - wp${{ matrix.wordpress }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          tools: wp
+          coverage: none
+
+      - name: Install dependencies
+        run: |
+          composer require --no-update --dev roots/wordpress:${{ matrix.wordpress }} wp-phpunit/wp-phpunit:${{ matrix.wordpress }}
+          [ ${{ matrix.php }} == 8 ] || composer install
+          # Temporary hack to allow installing PHPUnit 7 with PHP 8 until WP 5.9.
+          # as WP PHPUnit does not allow PHPUnit higher than 7 yet.
+          # See https://github.com/WordPress/wordpress-develop/commit/8def694fe4c5df95f8e20e40389faf9cb92b6dca
+          [ ${{ matrix.php }} != 8 ] || composer install --ignore-platform-reqs
+          composer show
+
+      - name: Execute tests
+        run: composer test
